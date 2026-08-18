@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bobby Boxing 🥊</title>
+<title>Bobby Boxing V2 🥊</title>
 
 <style>
 * {
@@ -13,67 +13,238 @@
 }
 
 body {
-    background: #111;
-    font-family: Arial, sans-serif;
     overflow: hidden;
+    background: #08080d;
+    font-family: Arial, Helvetica, sans-serif;
+    user-select: none;
 }
 
 #game {
+    position: relative;
     width: 100vw;
     height: 100vh;
-    position: relative;
-    background: linear-gradient(#252545, #111122);
+    min-height: 600px;
     overflow: hidden;
+    background:
+        radial-gradient(circle at 50% 15%, #41416b 0%, #17172b 35%, #08080d 75%);
 }
 
-/* Lights */
-.light {
+/* =========================
+   ARENA
+========================= */
+
+.arena-light {
     position: absolute;
-    width: 180px;
-    height: 300px;
+    top: -10%;
+    width: 25%;
+    height: 70%;
+    opacity: .25;
+    filter: blur(5px);
     background: linear-gradient(
-        rgba(255,255,255,0.15),
+        rgba(255,255,255,.8),
         transparent
     );
-    transform: rotate(15deg);
 }
 
-.light1 { left: 10%; top: 0; }
-.light2 { right: 10%; top: 0; transform: rotate(-15deg); }
-
-/* Crowd */
-#crowd {
-    position: absolute;
-    top: 8%;
-    width: 100%;
-    text-align: center;
-    font-size: 40px;
-    letter-spacing: 15px;
+.arena-light.left {
+    left: 5%;
+    transform: rotate(12deg);
 }
 
-/* Title */
+.arena-light.right {
+    right: 5%;
+    transform: rotate(-12deg);
+}
+
 #title {
     position: absolute;
-    top: 3%;
+    top: 2%;
     width: 100%;
     text-align: center;
+    z-index: 20;
     color: white;
-    font-size: 42px;
-    font-weight: bold;
-    text-shadow: 0 0 15px #ff3030;
+    font-size: clamp(25px, 4vw, 48px);
+    font-weight: 900;
+    letter-spacing: 3px;
+    text-shadow:
+        0 3px 0 #000,
+        0 0 15px rgba(255,70,70,.7);
 }
 
-/* Ring */
+/* Crowd */
+
+#crowd {
+    position: absolute;
+    top: 12%;
+    width: 100%;
+    text-align: center;
+    font-size: clamp(22px, 4vw, 45px);
+    letter-spacing: 7px;
+    opacity: .8;
+    white-space: nowrap;
+}
+
+/* =========================
+   HUD
+========================= */
+
+.hud {
+    position: absolute;
+    top: 11%;
+    width: 34%;
+    z-index: 30;
+}
+
+#playerHud {
+    left: 4%;
+}
+
+#enemyHud {
+    right: 4%;
+    text-align: right;
+}
+
+.player-name {
+    color: white;
+    font-size: clamp(15px, 2vw, 25px);
+    font-weight: 900;
+    margin-bottom: 5px;
+    text-shadow: 2px 2px #000;
+}
+
+.bar {
+    position: relative;
+    height: 25px;
+    background: #202020;
+    border: 3px solid white;
+    border-radius: 7px;
+    overflow: hidden;
+    box-shadow: 0 3px 10px #000;
+}
+
+.health {
+    width: 100%;
+    height: 100%;
+    background: #21d45a;
+    transition: width .2s;
+}
+
+.stamina {
+    width: 100%;
+    height: 100%;
+    background: #22a8ff;
+    transition: width .15s;
+}
+
+.bar-label {
+    position: absolute;
+    left: 7px;
+    top: 2px;
+    color: white;
+    font-size: 13px;
+    font-weight: bold;
+    z-index: 2;
+    text-shadow: 1px 1px #000;
+}
+
+#enemyHud .bar-label {
+    left: auto;
+    right: 7px;
+}
+
+/* Round */
+
+#roundBox {
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 40;
+    text-align: center;
+    color: white;
+}
+
+#round {
+    font-size: 17px;
+    font-weight: bold;
+}
+
+#timer {
+    font-size: 38px;
+    font-weight: 900;
+    line-height: 40px;
+    text-shadow: 2px 2px #000;
+}
+
+/* Combo */
+
+#combo {
+    position: absolute;
+    top: 28%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 40;
+    color: #ffd43b;
+    font-size: clamp(22px, 3vw, 38px);
+    font-weight: 900;
+    text-shadow:
+        3px 3px #000,
+        0 0 12px #ff8c00;
+    opacity: 0;
+    transition: .15s;
+}
+
+#combo.show {
+    opacity: 1;
+}
+
+/* Message */
+
+#message {
+    position: absolute;
+    top: 32%;
+    width: 100%;
+    text-align: center;
+    z-index: 50;
+    color: white;
+    font-size: clamp(25px, 4vw, 50px);
+    font-weight: 900;
+    text-shadow: 4px 4px #000;
+}
+
+/* =========================
+   RING
+========================= */
+
 #ring {
     position: absolute;
-    left: 10%;
-    right: 10%;
+    left: 7%;
+    right: 7%;
     bottom: 8%;
-    height: 55%;
-    background: #ddd;
-    border: 12px solid #222;
-    box-shadow: 0 0 30px black;
+    height: 52%;
+    background: #dcdcdc;
+    border: 12px solid #171717;
+    box-shadow:
+        0 15px 35px #000,
+        inset 0 0 30px rgba(0,0,0,.3);
 }
+
+/* Canvas-like ring floor */
+
+#floor {
+    position: absolute;
+    inset: 0;
+    background:
+        repeating-linear-gradient(
+            45deg,
+            #eeeeee 0,
+            #eeeeee 25px,
+            #d6d6d6 25px,
+            #d6d6d6 50px
+        );
+}
+
+/* Ropes */
 
 .rope {
     position: absolute;
@@ -81,224 +252,353 @@ body {
     right: -12px;
     height: 8px;
     background: #e63946;
+    border-top: 2px solid rgba(255,255,255,.5);
+    border-bottom: 2px solid rgba(0,0,0,.3);
+    z-index: 10;
 }
 
 .rope1 { top: 20%; }
-.rope2 { top: 40%; }
-.rope3 { top: 60%; }
+.rope2 { top: 42%; }
+.rope3 { top: 64%; }
 
-.corner {
+/* Posts */
+
+.post {
     position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 20px;
-    background: #222;
+    top: -15px;
+    bottom: -15px;
+    width: 22px;
+    background: #111;
+    z-index: 12;
 }
 
-.corner.left { left: 5%; }
-.corner.right { right: 5%; }
-
-/* Floor */
-#floor {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    height: 40%;
-    background:
-        repeating-linear-gradient(
-            45deg,
-            #eeeeee,
-            #eeeeee 20px,
-            #dddddd 20px,
-            #dddddd 40px
-        );
+.post.left {
+    left: 4%;
 }
 
-/* Fighters */
+.post.right {
+    right: 4%;
+}
+
+/* =========================
+   FIGHTERS
+========================= */
+
 .fighter {
     position: absolute;
-    bottom: 12%;
-    width: 90px;
-    height: 180px;
-    transition: transform 0.08s;
+    bottom: 13%;
+    width: 105px;
+    height: 190px;
+    z-index: 15;
 }
 
-/* Bobby */
 #bobby {
-    left: 25%;
+    left: 20%;
 }
 
-/* Enemy */
 #enemy {
-    right: 25%;
-    transform: scaleX(-1);
+    left: 72%;
 }
 
 /* Head */
+
 .head {
     position: absolute;
     top: 0;
-    left: 25px;
-    width: 40px;
-    height: 40px;
-    background: #d99b6c;
+    left: 31px;
+    width: 44px;
+    height: 44px;
+    background: #c98258;
+    border: 4px solid #151515;
     border-radius: 50%;
-    border: 4px solid #111;
+    z-index: 5;
 }
 
 /* Hair */
+
 .head::before {
     content: "";
     position: absolute;
     top: -5px;
-    left: 3px;
-    width: 32px;
-    height: 15px;
-    background: #222;
-    border-radius: 50% 50% 0 0;
+    left: 1px;
+    width: 35px;
+    height: 17px;
+    background: #151515;
+    border-radius: 50% 50% 20% 20%;
+}
+
+/* Eye */
+
+.head::after {
+    content: "";
+    position: absolute;
+    right: 5px;
+    top: 19px;
+    width: 6px;
+    height: 6px;
+    background: white;
+    border-radius: 50%;
 }
 
 /* Body */
+
 .body {
     position: absolute;
-    top: 38px;
-    left: 20px;
-    width: 50px;
+    top: 41px;
+    left: 25px;
+    width: 55px;
     height: 75px;
-    background: #1d4ed8;
     border: 4px solid #111;
-    border-radius: 15px;
+    border-radius: 16px 16px 10px 10px;
+    z-index: 3;
+}
+
+/* Bobby shirt */
+
+#bobby .body {
+    background: linear-gradient(#2563eb, #102a8a);
+}
+
+/* Venom shirt */
+
+#enemy .body {
+    background: linear-gradient(#222, #050505);
 }
 
 /* Arms */
+
 .arm {
     position: absolute;
-    width: 25px;
+    top: 47px;
+    width: 28px;
     height: 65px;
-    background: #d99b6c;
+    background: #c98258;
     border: 4px solid #111;
     border-radius: 20px;
-    top: 45px;
+    z-index: 2;
+    transform-origin: top center;
 }
 
 .left-arm {
-    left: 0;
+    left: 2px;
     transform: rotate(25deg);
 }
 
 .right-arm {
-    right: 0;
+    right: 2px;
     transform: rotate(-25deg);
 }
 
 /* Gloves */
+
 .glove {
     position: absolute;
-    width: 32px;
-    height: 32px;
-    background: #e11d48;
+    width: 35px;
+    height: 35px;
     border: 4px solid #111;
     border-radius: 50%;
+    z-index: 6;
+}
+
+#bobby .glove {
+    background: #e11d48;
+}
+
+#enemy .glove {
+    background: #050505;
+    box-shadow: 0 0 8px #555;
 }
 
 .left-glove {
-    left: -10px;
-    top: 92px;
+    left: -7px;
+    top: 95px;
 }
 
 .right-glove {
-    right: -10px;
-    top: 92px;
+    right: -7px;
+    top: 95px;
 }
 
 /* Legs */
+
 .leg {
     position: absolute;
-    width: 25px;
-    height: 70px;
+    top: 108px;
+    width: 27px;
+    height: 73px;
     background: #111827;
     border: 4px solid #111;
-    top: 105px;
+    z-index: 1;
 }
 
 .left-leg {
-    left: 22px;
-    transform: rotate(5deg);
+    left: 25px;
+    transform: rotate(4deg);
 }
 
 .right-leg {
-    right: 22px;
-    transform: rotate(-5deg);
+    right: 25px;
+    transform: rotate(-4deg);
 }
 
-/* Health */
-.health-container {
+/* Shoes */
+
+.shoe {
     position: absolute;
-    top: 14%;
-    width: 30%;
-    height: 28px;
-    background: #333;
-    border: 4px solid white;
+    width: 35px;
+    height: 18px;
+    background: #111;
+    border-radius: 50%;
+    bottom: -7px;
 }
 
-#playerHealthBox {
-    left: 5%;
+.left-shoe {
+    left: 18px;
 }
 
-#enemyHealthBox {
-    right: 5%;
+.right-shoe {
+    right: 18px;
 }
 
-.health {
-    height: 100%;
-    background: #22c55e;
-    width: 100%;
-    transition: width 0.2s;
+/* =========================
+   ANIMATIONS
+========================= */
+
+.punch-jab .right-arm {
+    transform: rotate(-75deg) translateX(30px);
 }
 
-.name {
-    color: white;
-    font-size: 20px;
-    font-weight: bold;
-    margin-bottom: 5px;
+.punch-cross .right-arm {
+    transform: rotate(-100deg) translateX(45px);
 }
 
-/* Messages */
-#message {
-    position: absolute;
-    top: 22%;
-    width: 100%;
-    text-align: center;
-    color: white;
-    font-size: 35px;
-    font-weight: bold;
-    text-shadow: 0 0 10px black;
+.punch-heavy .right-arm {
+    transform: rotate(-125deg) translateX(55px);
 }
 
-/* Controls */
-#controls {
-    position: absolute;
-    bottom: 2%;
-    width: 100%;
-    text-align: center;
-    color: white;
-    font-size: 17px;
+.punch-jab .right-glove,
+.punch-cross .right-glove,
+.punch-heavy .right-glove {
+    transform: translate(35px, -20px);
 }
 
-/* Punch animation */
-.punch {
-    transform: translateX(30px) rotate(-10deg);
+.blocking .left-arm {
+    transform: rotate(-55deg) translateY(-20px);
 }
 
-/* Enemy hit */
+.blocking .right-arm {
+    transform: rotate(55deg) translateY(-20px);
+}
+
+.blocking .left-glove {
+    transform: translate(12px, -25px);
+}
+
+.blocking .right-glove {
+    transform: translate(-12px, -25px);
+}
+
+.jump {
+    bottom: 35% !important;
+}
+
 .hit {
-    animation: hit 0.15s;
+    animation: hit .2s;
 }
 
 @keyframes hit {
     0% { transform: translateX(0); }
-    50% { transform: translateX(20px); }
+    35% { transform: translateX(20px) rotate(3deg); }
+    70% { transform: translateX(-8px); }
     100% { transform: translateX(0); }
+}
+
+/* Hit flash */
+
+#hitFlash {
+    position: absolute;
+    inset: 0;
+    z-index: 100;
+    pointer-events: none;
+    opacity: 0;
+    background: white;
+}
+
+#hitFlash.active {
+    animation: flash .12s;
+}
+
+@keyframes flash {
+    0% { opacity: .45; }
+    100% { opacity: 0; }
+}
+
+/* =========================
+   CONTROLS
+========================= */
+
+#controls {
+    position: absolute;
+    bottom: 1%;
+    width: 100%;
+    text-align: center;
+    color: #ddd;
+    z-index: 30;
+    font-size: clamp(11px, 1.5vw, 17px);
+    font-weight: bold;
+}
+
+.key {
+    display: inline-block;
+    padding: 3px 7px;
+    margin: 0 2px;
+    background: #252525;
+    border: 1px solid #666;
+    border-radius: 4px;
+    color: white;
+}
+
+/* =========================
+   GAME OVER
+========================= */
+
+#gameOver {
+    position: absolute;
+    inset: 0;
+    z-index: 200;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background: rgba(0,0,0,.75);
+    color: white;
+    text-align: center;
+}
+
+#gameOver h1 {
+    font-size: clamp(45px, 8vw, 90px);
+    text-shadow: 0 5px 15px #000;
+}
+
+#gameOver p {
+    margin-top: 15px;
+    font-size: 22px;
+}
+
+#restart {
+    margin-top: 25px;
+    padding: 13px 30px;
+    border: 0;
+    border-radius: 8px;
+    background: #e63946;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#restart:hover {
+    transform: scale(1.05);
 }
 </style>
 </head>
@@ -307,27 +607,56 @@ body {
 
 <div id="game">
 
-    <div class="light light1"></div>
-    <div class="light light2"></div>
+    <div class="arena-light left"></div>
+    <div class="arena-light right"></div>
 
     <div id="title">🥊 BOBBY BOXING 🥊</div>
 
-    <div id="crowd">👤 👤 👤 👤 👤 👤 👤 👤 👤</div>
-
-    <!-- Health -->
-    <div id="playerHealthBox" class="health-container">
-        <div class="name">BOBBY</div>
-        <div id="playerHealth" class="health"></div>
+    <div id="crowd">
+        👤 👤 👤 👤 👤 👤 👤 👤 👤 👤 👤
     </div>
 
-    <div id="enemyHealthBox" class="health-container">
-        <div class="name">VENOM</div>
-        <div id="enemyHealth" class="health"></div>
+    <!-- PLAYER HUD -->
+    <div id="playerHud" class="hud">
+        <div class="player-name">🥊 BOBBY</div>
+
+        <div class="bar">
+            <div id="playerHealth" class="health"></div>
+            <div class="bar-label">HEALTH</div>
+        </div>
+
+        <div class="bar" style="margin-top:5px;">
+            <div id="playerStamina" class="stamina"></div>
+            <div class="bar-label">STAMINA</div>
+        </div>
     </div>
+
+    <!-- ENEMY HUD -->
+    <div id="enemyHud" class="hud">
+        <div class="player-name">VENOM 🖤</div>
+
+        <div class="bar">
+            <div id="enemyHealth" class="health"></div>
+            <div class="bar-label">HEALTH</div>
+        </div>
+
+        <div class="bar" style="margin-top:5px;">
+            <div id="enemyStamina" class="stamina"></div>
+            <div class="bar-label">STAMINA</div>
+        </div>
+    </div>
+
+    <!-- ROUND -->
+    <div id="roundBox">
+        <div id="round">ROUND 1</div>
+        <div id="timer">60</div>
+    </div>
+
+    <div id="combo">COMBO x2 🔥</div>
 
     <div id="message">FIGHT! 🥊</div>
 
-    <!-- Ring -->
+    <!-- RING -->
     <div id="ring">
 
         <div id="floor"></div>
@@ -336,14 +665,13 @@ body {
         <div class="rope rope2"></div>
         <div class="rope rope3"></div>
 
-        <div class="corner left"></div>
-        <div class="corner right"></div>
+        <div class="post left"></div>
+        <div class="post right"></div>
 
-        <!-- Bobby -->
+        <!-- BOBBY -->
         <div id="bobby" class="fighter">
 
             <div class="head"></div>
-
             <div class="body"></div>
 
             <div class="arm left-arm"></div>
@@ -352,133 +680,222 @@ body {
             <div class="glove left-glove"></div>
             <div class="glove right-glove"></div>
 
-            <div class="leg left-leg"></div>
-            <div class="leg right-leg"></div>
+            <div class="leg left-leg">
+                <div class="shoe left-shoe"></div>
+            </div>
+
+            <div class="leg right-leg">
+                <div class="shoe right-shoe"></div>
+            </div>
 
         </div>
 
-        <!-- Enemy -->
+        <!-- VENOM -->
         <div id="enemy" class="fighter">
 
             <div class="head"></div>
-
-            <div class="body" style="background:#111;"></div>
+            <div class="body"></div>
 
             <div class="arm left-arm"></div>
             <div class="arm right-arm"></div>
 
-            <div class="glove left-glove" style="background:#000;"></div>
-            <div class="glove right-glove" style="background:#000;"></div>
+            <div class="glove left-glove"></div>
+            <div class="glove right-glove"></div>
 
-            <div class="leg left-leg"></div>
-            <div class="leg right-leg"></div>
+            <div class="leg left-leg">
+                <div class="shoe left-shoe"></div>
+            </div>
+
+            <div class="leg right-leg">
+                <div class="shoe right-shoe"></div>
+            </div>
 
         </div>
 
     </div>
 
     <div id="controls">
-        A / D = Move &nbsp; | &nbsp;
-        W = Jump &nbsp; | &nbsp;
-        J = Jab 👊 &nbsp; | &nbsp;
-        K = Heavy Punch 💥 &nbsp; | &nbsp;
-        L = Block 🛡️
+        <span class="key">A</span>/<span class="key">D</span> Move
+        &nbsp; | &nbsp;
+        <span class="key">W</span> Jump
+        &nbsp; | &nbsp;
+        <span class="key">J</span> Jab
+        &nbsp; | &nbsp;
+        <span class="key">K</span> Cross
+        &nbsp; | &nbsp;
+        <span class="key">L</span> Heavy
+        &nbsp; | &nbsp;
+        <span class="key">S</span> Block
+    </div>
+
+    <div id="hitFlash"></div>
+
+    <!-- GAME OVER -->
+    <div id="gameOver">
+        <h1 id="result">K.O!</h1>
+        <p id="resultText">Bobby wins!</p>
+        <button id="restart">🔄 REMATCH</button>
     </div>
 
 </div>
 
 <script>
 
+/* ==========================================
+   GAME VARIABLES
+========================================== */
+
 const bobby = document.getElementById("bobby");
 const enemy = document.getElementById("enemy");
 
-const playerHealth = document.getElementById("playerHealth");
-const enemyHealth = document.getElementById("enemyHealth");
-const message = document.getElementById("message");
+const playerHealthBar =
+    document.getElementById("playerHealth");
+
+const enemyHealthBar =
+    document.getElementById("enemyHealth");
+
+const playerStaminaBar =
+    document.getElementById("playerStamina");
+
+const enemyStaminaBar =
+    document.getElementById("enemyStamina");
+
+const message =
+    document.getElementById("message");
+
+const comboDisplay =
+    document.getElementById("combo");
+
+const timerDisplay =
+    document.getElementById("timer");
+
+const gameOverScreen =
+    document.getElementById("gameOver");
+
+const result =
+    document.getElementById("result");
+
+const resultText =
+    document.getElementById("resultText");
+
+const hitFlash =
+    document.getElementById("hitFlash");
 
 let playerHP = 100;
 let enemyHP = 100;
 
-let playerX = 25;
-let enemyX = 70;
+let playerStamina = 100;
+let enemyStamina = 100;
+
+let playerX = 20;
+let enemyX = 72;
 
 let jumping = false;
 let blocking = false;
+
 let gameOver = false;
 
-/* Keyboard Controls */
+let timeLeft = 60;
+
+let combo = 0;
+let comboTimer = null;
+
+let keys = {};
+
+/* ==========================================
+   ATTACK SETTINGS
+========================================== */
+
+const attacks = {
+
+    jab: {
+        damage: 7,
+        stamina: 5,
+        className: "punch-jab",
+        message: "👊 JAB!"
+    },
+
+    cross: {
+        damage: 11,
+        stamina: 10,
+        className: "punch-cross",
+        message: "🥊 CROSS!"
+    },
+
+    heavy: {
+        damage: 19,
+        stamina: 20,
+        className: "punch-heavy",
+        message: "💥 HEAVY!"
+    }
+
+};
+
+
+/* ==========================================
+   KEYBOARD
+========================================== */
 
 document.addEventListener("keydown", function(event) {
 
-    if (gameOver) return;
-
     const key = event.key.toLowerCase();
 
-    /* Move Left */
+    keys[key] = true;
+
+    if (gameOver)
+        return;
+
+    /* Movement */
 
     if (key === "a") {
 
-        playerX -= 2;
+        playerX -= 2.5;
 
         if (playerX < 5)
             playerX = 5;
 
-        bobby.style.left = playerX + "%";
+        updatePlayerPosition();
     }
-
-    /* Move Right */
 
     if (key === "d") {
 
-        playerX += 2;
+        playerX += 2.5;
 
-        if (playerX > 80)
-            playerX = 80;
+        if (playerX > 82)
+            playerX = 82;
 
-        bobby.style.left = playerX + "%";
+        updatePlayerPosition();
     }
 
     /* Jump */
 
-    if (key === "w" && !jumping) {
+    if (key === "w") {
 
-        jumping = true;
-
-        bobby.style.bottom = "35%";
-
-        setTimeout(() => {
-
-            bobby.style.bottom = "12%";
-
-            jumping = false;
-
-        }, 400);
-    }
-
-    /* Jab */
-
-    if (key === "j") {
-
-        punch(8);
-
-    }
-
-    /* Heavy Punch */
-
-    if (key === "k") {
-
-        punch(15);
-
+        jump();
     }
 
     /* Block */
 
+    if (key === "s") {
+
+        startBlock();
+    }
+
+    /* Attacks */
+
+    if (key === "j") {
+
+        attack("jab");
+    }
+
+    if (key === "k") {
+
+        attack("cross");
+    }
+
     if (key === "l") {
 
-        blocking = true;
-
-        message.innerText = "🛡️ BLOCK!";
-
+        attack("heavy");
     }
 
 });
@@ -486,162 +903,533 @@ document.addEventListener("keydown", function(event) {
 
 document.addEventListener("keyup", function(event) {
 
-    if (event.key.toLowerCase() === "l") {
+    const key = event.key.toLowerCase();
 
-        blocking = false;
+    keys[key] = false;
 
-        message.innerText = "FIGHT! 🥊";
+    if (key === "s") {
 
+        stopBlock();
     }
 
 });
 
 
-/* Punch Function */
+/* ==========================================
+   POSITION
+========================================== */
 
-function punch(damage) {
+function updatePlayerPosition() {
 
-    if (gameOver) return;
+    bobby.style.left = playerX + "%";
 
-    bobby.classList.add("punch");
+}
 
-    setTimeout(() => {
 
-        bobby.classList.remove("punch");
+/* ==========================================
+   JUMP
+========================================== */
 
-    }, 150);
+function jump() {
 
-    /* Check distance */
+    if (jumping)
+        return;
 
-    const distance = Math.abs(playerX - enemyX);
+    jumping = true;
+
+    bobby.classList.add("jump");
+
+    setTimeout(function() {
+
+        bobby.classList.remove("jump");
+
+        jumping = false;
+
+    }, 450);
+
+}
+
+
+/* ==========================================
+   BLOCK
+========================================== */
+
+function startBlock() {
+
+    if (blocking)
+        return;
+
+    blocking = true;
+
+    bobby.classList.add("blocking");
+
+    message.innerText = "🛡️ BLOCKING";
+
+}
+
+
+function stopBlock() {
+
+    blocking = false;
+
+    bobby.classList.remove("blocking");
+
+    if (!gameOver)
+        message.innerText = "FIGHT! 🥊";
+
+}
+
+
+/* ==========================================
+   PLAYER ATTACK
+========================================== */
+
+function attack(type) {
+
+    if (gameOver)
+        return;
+
+    if (blocking)
+        return;
+
+    const attackData = attacks[type];
+
+    if (playerStamina < attackData.stamina) {
+
+        message.innerText = "⚡ TOO TIRED!";
+
+        return;
+    }
+
+    playerStamina -= attackData.stamina;
+
+    updateBars();
+
+    bobby.classList.remove(
+        "punch-jab",
+        "punch-cross",
+        "punch-heavy"
+    );
+
+    void bobby.offsetWidth;
+
+    bobby.classList.add(attackData.className);
+
+    setTimeout(function() {
+
+        bobby.classList.remove(attackData.className);
+
+    }, 220);
+
+    const distance =
+        Math.abs(playerX - enemyX);
 
     if (distance < 25) {
 
-        enemyHP -= damage;
+        dealDamageToEnemy(attackData.damage);
 
-        if (enemyHP < 0)
-            enemyHP = 0;
+        registerCombo();
 
-        enemyHealth.style.width = enemyHP + "%";
+    }
+    else {
 
-        enemy.classList.add("hit");
-
-        setTimeout(() => {
-
-            enemy.classList.remove("hit");
-
-        }, 150);
-
-        message.innerText = damage >= 15
-            ? "💥 HEAVY HIT!"
-            : "👊 JAB!";
-
-        if (enemyHP <= 0) {
-
-            winGame();
-
-        }
+        message.innerText = "🥊 MISS!";
 
     }
 
 }
 
 
-/* Enemy AI */
+/* ==========================================
+   DAMAGE ENEMY
+========================================== */
+
+function dealDamageToEnemy(damage) {
+
+    /* Enemy block */
+
+    const enemyBlocking =
+        enemy.classList.contains("blocking");
+
+    if (enemyBlocking) {
+
+        damage = Math.floor(damage * .25);
+
+        message.innerText =
+            "🛡️ VENOM BLOCKED!";
+
+    }
+    else {
+
+        message.innerText =
+            damage >= 15
+                ? "💥 MASSIVE HIT!"
+                : "👊 HIT!";
+    }
+
+    enemyHP -= damage;
+
+    if (enemyHP < 0)
+        enemyHP = 0;
+
+    enemyHealthBar.style.width =
+        enemyHP + "%";
+
+    enemy.classList.add("hit");
+
+    hitFlash.classList.remove("active");
+
+    void hitFlash.offsetWidth;
+
+    hitFlash.classList.add("active");
+
+    setTimeout(function() {
+
+        enemy.classList.remove("hit");
+
+    }, 200);
+
+    if (enemyHP <= 0) {
+
+        winGame();
+
+    }
+
+}
+
+
+/* ==========================================
+   COMBO
+========================================== */
+
+function registerCombo() {
+
+    combo++;
+
+    comboDisplay.innerText =
+        "COMBO x" + combo + " 🔥";
+
+    comboDisplay.classList.add("show");
+
+    clearTimeout(comboTimer);
+
+    comboTimer = setTimeout(function() {
+
+        combo = 0;
+
+        comboDisplay.classList.remove("show");
+
+    }, 1200);
+
+}
+
+
+/* ==========================================
+   ENEMY AI
+========================================== */
 
 setInterval(function() {
 
-    if (gameOver) return;
+    if (gameOver)
+        return;
+
+    const distance =
+        Math.abs(playerX - enemyX);
 
     /* Move toward Bobby */
 
-    if (enemyX > playerX + 15) {
+    if (distance > 18) {
 
-        enemyX -= 1;
+        if (enemyX > playerX) {
 
-    }
-    else if (enemyX < playerX - 15) {
-
-        enemyX += 1;
-
-    }
-
-    enemy.style.right = (100 - enemyX) + "%";
-
-    /* Enemy attack */
-
-    const distance = Math.abs(playerX - enemyX);
-
-    if (distance < 18 && Math.random() < 0.25) {
-
-        if (!blocking) {
-
-            playerHP -= 8;
-
-            if (playerHP < 0)
-                playerHP = 0;
-
-            playerHealth.style.width = playerHP + "%";
-
-            message.innerText = "💥 BOBBY GOT HIT!";
-
-            if (playerHP <= 0) {
-
-                loseGame();
-
-            }
+            enemyX -= 1;
 
         }
         else {
 
-            message.innerText = "🛡️ BLOCKED!";
+            enemyX += 1;
 
         }
 
+        enemy.style.left = enemyX + "%";
     }
+
+    /* Enemy attack */
+
+    if (distance < 20 &&
+        enemyStamina >= 10 &&
+        Math.random() < .35) {
+
+        enemyAttack();
+
+    }
+
+    /* Random block */
+
+    if (distance < 25 &&
+        Math.random() < .12) {
+
+        enemy.classList.add("blocking");
+
+        setTimeout(function() {
+
+            enemy.classList.remove("blocking");
+
+        }, 500);
+
+    }
+
+}, 400);
+
+
+/* ==========================================
+   ENEMY ATTACK
+========================================== */
+
+function enemyAttack() {
+
+    enemyStamina -= 10;
+
+    if (enemyStamina < 0)
+        enemyStamina = 0;
+
+    updateBars();
+
+    const damage =
+        Math.random() < .25
+            ? 15
+            : 8;
+
+    /* Bobby blocking */
+
+    if (blocking) {
+
+        const blockedDamage =
+            Math.floor(damage * .2);
+
+        playerHP -= blockedDamage;
+
+        message.innerText =
+            "🛡️ PERFECT BLOCK!";
+
+    }
+    else if (jumping) {
+
+        message.innerText =
+            "🌀 DODGED!";
+
+        return;
+
+    }
+    else {
+
+        playerHP -= damage;
+
+        message.innerText =
+            damage > 10
+                ? "💥 VENOM HEAVY HIT!"
+                : "👊 VENOM HIT!";
+
+        bobby.classList.add("hit");
+
+        setTimeout(function() {
+
+            bobby.classList.remove("hit");
+
+        }, 200);
+
+    }
+
+    if (playerHP < 0)
+        playerHP = 0;
+
+    updateBars();
+
+    if (playerHP <= 0) {
+
+        loseGame();
+
+    }
+
+}
+
+
+/* ==========================================
+   STAMINA REGENERATION
+========================================== */
+
+setInterval(function() {
+
+    if (gameOver)
+        return;
+
+    if (!blocking) {
+
+        playerStamina += 3;
+
+    }
+
+    enemyStamina += 4;
+
+    if (playerStamina > 100)
+        playerStamina = 100;
+
+    if (enemyStamina > 100)
+        enemyStamina = 100;
+
+    updateBars();
 
 }, 500);
 
 
-/* Win */
+/* ==========================================
+   UPDATE BARS
+========================================== */
+
+function updateBars() {
+
+    playerHealthBar.style.width =
+        playerHP + "%";
+
+    enemyHealthBar.style.width =
+        enemyHP + "%";
+
+    playerStaminaBar.style.width =
+        playerStamina + "%";
+
+    enemyStaminaBar.style.width =
+        enemyStamina + "%";
+
+}
+
+
+/* ==========================================
+   ROUND TIMER
+========================================== */
+
+const roundTimer =
+    setInterval(function() {
+
+        if (gameOver)
+            return;
+
+        timeLeft--;
+
+        timerDisplay.innerText =
+            timeLeft;
+
+        if (timeLeft <= 10) {
+
+            timerDisplay.style.color =
+                "#ff3333";
+
+        }
+
+        if (timeLeft <= 0) {
+
+            endRound();
+
+        }
+
+    }, 1000);
+
+
+/* ==========================================
+   ROUND END
+========================================== */
+
+function endRound() {
+
+    gameOver = true;
+
+    if (playerHP > enemyHP) {
+
+        result.innerText = "🏆 ROUND WIN!";
+
+        resultText.innerText =
+            "Bobby wins on points!";
+
+    }
+    else if (enemyHP > playerHP) {
+
+        result.innerText = "💀 ROUND LOST";
+
+        resultText.innerText =
+            "Venom wins on points!";
+
+    }
+    else {
+
+        result.innerText = "🤝 DRAW!";
+
+        resultText.innerText =
+            "Nobody wins this round!";
+
+    }
+
+    gameOverScreen.style.display =
+        "flex";
+
+}
+
+
+/* ==========================================
+   WIN
+========================================== */
 
 function winGame() {
 
     gameOver = true;
 
-    message.innerText = "🏆 BOBBY WINS! 🥊🔥";
+    result.innerText =
+        "🏆 KNOCKOUT!";
 
-    setTimeout(() => {
+    resultText.innerText =
+        "BOBBY DEFEATED VENOM! 🔥🥊";
 
-        message.innerText += "  Press R to Restart";
-
-    }, 1000);
+    gameOverScreen.style.display =
+        "flex";
 
 }
 
 
-/* Lose */
+/* ==========================================
+   LOSE
+========================================== */
 
 function loseGame() {
 
     gameOver = true;
 
-    message.innerText = "💀 BOBBY GOT KO'D!";
+    result.innerText =
+        "💀 K.O.!";
+
+    resultText.innerText =
+        "VENOM KNOCKED BOBBY OUT!";
+
+    gameOverScreen.style.display =
+        "flex";
 
 }
 
 
-/* Restart */
+/* ==========================================
+   RESTART
+========================================== */
 
-document.addEventListener("keydown", function(event) {
-
-    if (event.key.toLowerCase() === "r") {
+document.getElementById("restart")
+    .addEventListener("click", function() {
 
         location.reload();
 
-    }
+    });
 
-});
+
+/* ==========================================
+   START
+========================================== */
+
+updateBars();
 
 </script>
 
