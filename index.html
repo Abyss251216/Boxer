@@ -2,959 +2,1243 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport"
+      content="width=device-width,initial-scale=1.0,user-scalable=no">
 
-<title>Bobby Boxing</title>
+<title>Bobby Boxing V5</title>
 
 <style>
 
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
 }
 
-body {
-    overflow: hidden;
-    background: #080912;
-    font-family: Arial, sans-serif;
-    color: white;
+html,body{
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    font-family:Arial,Helvetica,sans-serif;
+    background:#05060c;
+    color:white;
 }
 
-/* =========================
+button{
+    font-family:inherit;
+}
+
+/* =========================================
    GAME
-========================= */
+========================================= */
 
-#game {
-    width: 100vw;
-    height: 100vh;
-    min-height: 600px;
-    position: relative;
-    overflow: hidden;
+#game{
+    position:relative;
+    width:100vw;
+    height:100vh;
+    min-height:620px;
+    overflow:hidden;
 
     background:
         radial-gradient(
-            circle at 50% 30%,
-            #30334d,
-            #10121f 55%,
-            #05060b
+            ellipse at 50% 25%,
+            #30344e 0%,
+            #171a2b 40%,
+            #070810 80%
         );
 }
 
-/* =========================
+/* =========================================
    LIGHTS
-========================= */
+========================================= */
 
-.light {
-    position: absolute;
-    top: -100px;
-    width: 250px;
-    height: 500px;
+.light{
+    position:absolute;
+    top:-150px;
+    width:260px;
+    height:600px;
 
-    background: rgba(255,255,255,.08);
+    background:rgba(255,255,255,.07);
 
-    filter: blur(30px);
+    filter:blur(35px);
 
-    transform: rotate(15deg);
+    transform:rotate(18deg);
 }
 
-.light1 {
-    left: 5%;
+.light.one{
+    left:5%;
 }
 
-.light2 {
-    left: 42%;
-    transform: rotate(0deg);
+.light.two{
+    left:43%;
+    transform:rotate(0deg);
 }
 
-.light3 {
-    right: 5%;
-    transform: rotate(-15deg);
+.light.three{
+    right:5%;
+    transform:rotate(-18deg);
 }
 
-/* =========================
+/* =========================================
    TITLE
-========================= */
+========================================= */
 
-#title {
-    position: absolute;
-    top: 18px;
-    left: 50%;
+#title{
+    position:absolute;
+    top:12px;
+    left:50%;
+    transform:translateX(-50%);
 
-    transform: translateX(-50%);
+    z-index:100;
 
-    font-size: clamp(30px, 5vw, 55px);
+    font-size:clamp(28px,4.5vw,58px);
 
-    font-weight: 1000;
+    font-weight:1000;
+    letter-spacing:5px;
 
-    letter-spacing: 5px;
+    white-space:nowrap;
 
     text-shadow:
         4px 4px 0 #000,
-        0 0 20px #ef233c;
-
-    z-index: 100;
+        0 0 20px #ef3150;
 }
 
-#title span {
-    color: #ef233c;
+#title span{
+    color:#ef3150;
 }
 
-/* =========================
+/* =========================================
    HUD
-========================= */
+========================================= */
 
-.hud {
-    position: absolute;
-
-    top: 25px;
-
-    width: 30%;
-
-    z-index: 100;
+.hud{
+    position:absolute;
+    top:28px;
+    width:31%;
+    z-index:120;
 }
 
-#playerHUD {
-    left: 3%;
+#playerHUD{
+    left:2.5%;
 }
 
-#enemyHUD {
-    right: 3%;
-    text-align: right;
+#enemyHUD{
+    right:2.5%;
 }
 
-.name {
-    font-size: 20px;
-    font-weight: 900;
-
-    margin-bottom: 7px;
+.name{
+    font-size:20px;
+    font-weight:1000;
+    margin-bottom:6px;
 }
 
-.bar {
-    width: 100%;
-    height: 17px;
-
-    margin-bottom: 6px;
-
-    background: #090909;
-
-    border: 2px solid white;
-
-    border-radius: 4px;
-
-    overflow: hidden;
+#enemyHUD .name{
+    text-align:right;
 }
 
-.fill {
-    width: 100%;
-    height: 100%;
+.bar{
+    width:100%;
+    height:18px;
 
-    transition: width .15s linear;
+    margin-bottom:6px;
+
+    background:#080808;
+
+    border:2px solid #fff;
+
+    border-radius:5px;
+
+    overflow:hidden;
+
+    box-shadow:
+        0 2px 8px rgba(0,0,0,.5);
 }
 
-.health {
-    background: #1ed760;
+.fill{
+    width:100%;
+    height:100%;
+
+    transition:
+        width .15s ease;
 }
 
-.stamina {
-    background: #199cf0;
+.health{
+    background:
+        linear-gradient(
+            90deg,
+            #0fc65a,
+            #29ef67
+        );
 }
 
-/* =========================
+.stamina{
+    background:
+        linear-gradient(
+            90deg,
+            #087fd5,
+            #2bb5ff
+        );
+}
+
+/* =========================================
    ROUND
-========================= */
+========================================= */
 
-#round {
-    position: absolute;
+#roundBox{
+    position:absolute;
+    top:68px;
+    left:50%;
 
-    top: 70px;
-    left: 50%;
+    transform:translateX(-50%);
 
-    transform: translateX(-50%);
+    z-index:130;
 
-    text-align: center;
-
-    z-index: 110;
-}
-
-#roundNumber {
-    font-size: 12px;
-    letter-spacing: 3px;
-    color: #c9ccda;
-}
-
-#time {
-    font-size: 32px;
-    font-weight: 1000;
-}
-
-/* =========================
-   CROWD
-========================= */
-
-#crowd {
-    position: absolute;
-
-    top: 140px;
-    left: 0;
-
-    width: 100%;
-
-    text-align: center;
-
-    font-size: 35px;
-
-    letter-spacing: 14px;
-
-    color: #343954;
-
-    opacity: .7;
-}
-
-/* =========================
-   RING
-========================= */
-
-#ring {
-
-    position: absolute;
-
-    left: 5%;
-    right: 5%;
-
-    bottom: 8%;
-
-    height: 58%;
-
-    background:
-        repeating-linear-gradient(
-            45deg,
-            #eeeeee,
-            #eeeeee 35px,
-            #d5d5d5 35px,
-            #d5d5d5 70px
-        );
-
-    border: 12px solid #090909;
-
-    box-shadow:
-        0 20px 40px rgba(0,0,0,.7);
-
-    overflow: hidden;
-}
-
-/* =========================
-   ROPES
-========================= */
-
-.rope {
-
-    position: absolute;
-
-    left: 0;
-    right: 0;
-
-    height: 7px;
-
-    background: #e5223b;
-
-    z-index: 20;
-
-    box-shadow:
-        0 2px 3px rgba(0,0,0,.4);
-}
-
-.rope1 {
-    top: 20%;
-}
-
-.rope2 {
-    top: 45%;
-}
-
-.rope3 {
-    top: 70%;
-}
-
-/* =========================
-   POSTS
-========================= */
-
-.post {
-
-    position: absolute;
-
-    top: -10px;
-    bottom: -10px;
-
-    width: 25px;
-
-    background: #090909;
-
-    z-index: 30;
-}
-
-.post.left {
-    left: 5%;
-}
-
-.post.right {
-    right: 5%;
-}
-
-/* =========================
-   FIGHTER
-========================= */
-
-.fighter {
-
-    position: absolute;
-
-    width: 120px;
-    height: 220px;
-
-    bottom: 12%;
-
-    z-index: 25;
-
-    transition: left .08s linear;
-}
-
-/* =========================
-   HEAD
-========================= */
-
-.head {
-
-    position: absolute;
-
-    width: 48px;
-    height: 48px;
-
-    left: 36px;
-    top: 0;
-
-    background: #c9825b;
-
-    border: 4px solid #111;
-
-    border-radius: 50%;
-
-    z-index: 10;
-}
-
-/* hair */
-
-.head:before {
-
-    content: "";
-
-    position: absolute;
-
-    left: -1px;
-    top: -5px;
-
-    width: 42px;
-    height: 18px;
-
-    background: #111;
-
-    border-radius: 50% 50% 20% 20%;
-}
-
-/* eye */
-
-.head:after {
-
-    content: "";
-
-    position: absolute;
-
-    width: 7px;
-    height: 7px;
-
-    right: 5px;
-    top: 20px;
-
-    background: white;
-
-    border-radius: 50%;
-}
-
-/* =========================
-   BODY
-========================= */
-
-.body {
-
-    position: absolute;
-
-    left: 27px;
-    top: 48px;
-
-    width: 66px;
-    height: 84px;
-
-    border: 4px solid #111;
-
-    border-radius: 16px;
-
-    z-index: 5;
-}
-
-#bobby .body {
-
-    background:
-        linear-gradient(
-            #2874df,
-            #123c96
-        );
-}
-
-#venom .body {
-
-    background:
-        linear-gradient(
-            #292929,
-            #050505
-        );
-}
-
-/* =========================
-   ARMS
-========================= */
-
-.arm {
-
-    position: absolute;
-
-    top: 55px;
-
-    width: 30px;
-    height: 68px;
-
-    background: #c9825b;
-
-    border: 4px solid #111;
-
-    border-radius: 20px;
-
-    transform-origin: top center;
-
-    z-index: 4;
-}
-
-.arm.left {
-    left: 5px;
-
-    transform: rotate(25deg);
-}
-
-.arm.right {
-    right: 5px;
-
-    transform: rotate(-25deg);
-}
-
-/* =========================
-   GLOVES
-========================= */
-
-.glove {
-
-    position: absolute;
-
-    width: 40px;
-    height: 40px;
-
-    border-radius: 50%;
-
-    border: 4px solid #111;
-
-    z-index: 15;
-}
-
-#bobby .glove {
-    background: #ef2448;
-}
-
-#venom .glove {
-    background: #090909;
-}
-
-.glove.left {
-    left: -5px;
-    top: 104px;
-}
-
-.glove.right {
-    right: -5px;
-    top: 104px;
-}
-
-/* =========================
-   LEGS
-========================= */
-
-.leg {
-
-    position: absolute;
-
-    top: 126px;
-
-    width: 30px;
-    height: 80px;
-
-    background: #101522;
-
-    border: 4px solid #090909;
-
-    z-index: 2;
-}
-
-.leg.left {
-    left: 29px;
-}
-
-.leg.right {
-    right: 29px;
-}
-
-/* shoes */
-
-.leg:after {
-
-    content: "";
-
-    position: absolute;
-
-    bottom: -10px;
-
-    width: 42px;
-    height: 18px;
-
-    background: #080808;
-
-    border-radius: 50%;
-}
-
-.leg.left:after {
-    left: -12px;
-}
-
-.leg.right:after {
-    right: -12px;
-}
-
-/* =========================
-   PUNCH
-========================= */
-
-.jab .arm.right {
-
-    animation: jabArm .2s;
-}
-
-.jab .glove.right {
-
-    animation: jabGlove .2s;
-}
-
-@keyframes jabArm {
-
-    0% {
-        transform: rotate(-25deg);
-    }
-
-    50% {
-        transform:
-            rotate(-80deg)
-            translateX(25px);
-    }
-
-    100% {
-        transform: rotate(-25deg);
-    }
-}
-
-@keyframes jabGlove {
-
-    0% {
-        transform: translate(0,0);
-    }
-
-    50% {
-        transform: translate(35px,-15px);
-    }
-
-    100% {
-        transform: translate(0,0);
-    }
-}
-
-/* =========================
-   CROSS
-========================= */
-
-.cross .arm.right {
-
-    animation: crossArm .25s;
-}
-
-.cross .glove.right {
-
-    animation: crossGlove .25s;
-}
-
-@keyframes crossArm {
-
-    0% {
-        transform: rotate(-25deg);
-    }
-
-    50% {
-        transform:
-            rotate(-100deg)
-            translateX(40px);
-    }
-
-    100% {
-        transform: rotate(-25deg);
-    }
-}
-
-@keyframes crossGlove {
-
-    0% {
-        transform: translate(0,0);
-    }
-
-    50% {
-        transform: translate(45px,-25px);
-    }
-
-    100% {
-        transform: translate(0,0);
-    }
-}
-
-/* =========================
-   HEAVY
-========================= */
-
-.heavy .arm.right {
-
-    animation: heavyArm .3s;
-}
-
-.heavy .glove.right {
-
-    animation: heavyGlove .3s;
-}
-
-@keyframes heavyArm {
-
-    0% {
-        transform: rotate(-25deg);
-    }
-
-    50% {
-        transform:
-            rotate(-125deg)
-            translateX(45px);
-    }
-
-    100% {
-        transform: rotate(-25deg);
-    }
-}
-
-@keyframes heavyGlove {
-
-    0% {
-        transform: translate(0,0);
-    }
-
-    50% {
-        transform:
-            translate(55px,-35px)
-            scale(1.1);
-    }
-
-    100% {
-        transform: translate(0,0);
-    }
-}
-
-/* =========================
-   BLOCK
-========================= */
-
-.block .arm.left {
-    transform: rotate(-60deg);
-}
-
-.block .arm.right {
-    transform: rotate(60deg);
-}
-
-.block .glove.left {
-    transform: translate(10px,-20px);
-}
-
-.block .glove.right {
-    transform: translate(-10px,-20px);
-}
-
-/* =========================
-   HIT
-========================= */
-
-.hit {
-
-    animation: hit .2s;
-}
-
-@keyframes hit {
-
-    0% {
-        transform: translateX(0);
-    }
-
-    30% {
-        transform: translateX(18px);
-    }
-
-    60% {
-        transform: translateX(-10px);
-    }
-
-    100% {
-        transform: translateX(0);
-    }
-}
-
-/* =========================
-   JUMP
-========================= */
-
-.jump {
-
-    transform: translateY(-100px);
-}
-
-/* =========================
-   MESSAGE
-========================= */
-
-#message {
-
-    position: absolute;
-
-    left: 50%;
-    top: 32%;
-
-    transform: translateX(-50%);
-
-    z-index: 150;
-
-    font-size: 45px;
-
-    font-weight: 1000;
+    text-align:center;
 
     text-shadow:
-        4px 4px #000;
-
-    pointer-events: none;
-
-    opacity: 0;
+        3px 3px #000;
 }
 
-.messageShow {
-
-    animation: message .7s;
+#roundText{
+    font-size:12px;
+    letter-spacing:3px;
+    font-weight:bold;
 }
 
-@keyframes message {
+#timer{
+    font-size:36px;
+    font-weight:1000;
+}
 
-    0% {
-        opacity: 0;
+#timer.danger{
+    color:#ff263f;
+    animation:timerPulse .5s infinite alternate;
+}
+
+@keyframes timerPulse{
+    from{transform:scale(1);}
+    to{transform:scale(1.12);}
+}
+
+/* =========================================
+   COMBO
+========================================= */
+
+#combo{
+    position:absolute;
+
+    left:50%;
+    top:21%;
+
+    transform:translateX(-50%);
+
+    z-index:200;
+
+    text-align:center;
+
+    opacity:0;
+    pointer-events:none;
+}
+
+#comboNumber{
+    font-size:52px;
+    font-weight:1000;
+
+    color:#ffd23f;
+
+    text-shadow:
+        4px 4px #000,
+        0 0 20px #ff7b00;
+}
+
+#comboText{
+    font-size:18px;
+    font-weight:1000;
+    letter-spacing:4px;
+}
+
+.comboShow{
+    animation:comboPop .7s;
+}
+
+@keyframes comboPop{
+
+    0%{
+        opacity:0;
         transform:
             translateX(-50%)
             scale(.5);
     }
 
-    30% {
-        opacity: 1;
+    25%{
+        opacity:1;
         transform:
             translateX(-50%)
-            scale(1.2);
+            scale(1.25);
     }
 
-    70% {
-        opacity: 1;
+    70%{
+        opacity:1;
     }
 
-    100% {
-        opacity: 0;
+    100%{
+        opacity:0;
+        transform:
+            translateX(-50%)
+            scale(1);
     }
 }
 
-/* =========================
+/* =========================================
+   CROWD
+========================================= */
+
+#crowd{
+    position:absolute;
+    top:145px;
+    left:0;
+
+    width:100%;
+
+    text-align:center;
+
+    color:#3b3f5c;
+
+    font-size:34px;
+    letter-spacing:10px;
+
+    opacity:.7;
+}
+
+/* =========================================
+   RING
+========================================= */
+
+#ring{
+    position:absolute;
+
+    left:4%;
+    right:4%;
+    bottom:8%;
+
+    height:59%;
+
+    border:12px solid #090909;
+
+    overflow:hidden;
+
+    background:
+        repeating-linear-gradient(
+            45deg,
+            #f3f3f3 0px,
+            #f3f3f3 36px,
+            #d6d6d6 36px,
+            #d6d6d6 72px
+        );
+
+    box-shadow:
+        0 20px 50px rgba(0,0,0,.8);
+}
+
+/* =========================================
+   ROPES
+========================================= */
+
+.rope{
+    position:absolute;
+    left:0;
+    right:0;
+
+    height:7px;
+
+    background:#e52640;
+
+    z-index:30;
+
+    box-shadow:
+        0 2px 4px rgba(0,0,0,.6);
+}
+
+.rope.one{top:20%;}
+.rope.two{top:45%;}
+.rope.three{top:70%;}
+
+/* =========================================
+   POSTS
+========================================= */
+
+.post{
+    position:absolute;
+
+    top:-10px;
+    bottom:-10px;
+
+    width:28px;
+
+    background:#090909;
+
+    z-index:40;
+}
+
+.post.left{left:5%;}
+.post.right{right:5%;}
+
+/* =========================================
+   FLOOR
+========================================= */
+
+#floor{
+    position:absolute;
+
+    left:0;
+    right:0;
+    bottom:0;
+
+    height:24%;
+
+    background:
+        linear-gradient(
+            rgba(255,255,255,.15),
+            rgba(0,0,0,.15)
+        );
+
+    border-top:2px solid rgba(0,0,0,.15);
+}
+
+/* =========================================
+   FIGHTER
+========================================= */
+
+.fighter{
+    position:absolute;
+
+    width:125px;
+    height:225px;
+
+    bottom:13%;
+
+    z-index:50;
+
+    will-change:left,transform;
+
+    transition:left .06s linear;
+}
+
+/* =========================================
+   HEAD
+========================================= */
+
+.head{
+    position:absolute;
+
+    width:49px;
+    height:49px;
+
+    left:38px;
+    top:0;
+
+    background:#c9855e;
+
+    border:4px solid #111;
+
+    border-radius:50%;
+
+    z-index:10;
+}
+
+/* Hair */
+
+.head:before{
+    content:"";
+
+    position:absolute;
+
+    left:-2px;
+    top:-5px;
+
+    width:44px;
+    height:20px;
+
+    background:#111;
+
+    border-radius:
+        50% 50% 25% 25%;
+}
+
+/* Eye */
+
+.head:after{
+    content:"";
+
+    position:absolute;
+
+    right:5px;
+    top:20px;
+
+    width:7px;
+    height:7px;
+
+    background:white;
+
+    border-radius:50%;
+}
+
+/* =========================================
+   VENOM FACE
+========================================= */
+
+#venom .head{
+    background:#b87555;
+}
+
+#venom .head:before{
+    background:#030303;
+}
+
+/* =========================================
+   BODY
+========================================= */
+
+.body{
+    position:absolute;
+
+    left:27px;
+    top:48px;
+
+    width:71px;
+    height:87px;
+
+    border:4px solid #111;
+
+    border-radius:17px;
+
+    z-index:5;
+}
+
+#bobby .body{
+    background:
+        linear-gradient(
+            #2d73df,
+            #123b92
+        );
+}
+
+#venom .body{
+    background:
+        linear-gradient(
+            #252525,
+            #030303
+        );
+}
+
+/* =========================================
+   BOBBY LOGO
+========================================= */
+
+#bobby .body:after{
+    content:"B";
+
+    position:absolute;
+
+    left:50%;
+    top:50%;
+
+    transform:translate(-50%,-50%);
+
+    font-size:30px;
+    font-weight:1000;
+
+    color:#fff;
+
+    text-shadow:
+        2px 2px #000;
+}
+
+/* =========================================
+   VENOM LOGO
+========================================= */
+
+#venom .body:after{
+    content:"V";
+
+    position:absolute;
+
+    left:50%;
+    top:50%;
+
+    transform:translate(-50%,-50%);
+
+    font-size:28px;
+    font-weight:1000;
+
+    color:#e52c48;
+
+    text-shadow:
+        2px 2px #000;
+}
+
+/* =========================================
+   ARMS
+========================================= */
+
+.arm{
+    position:absolute;
+
+    top:54px;
+
+    width:31px;
+    height:70px;
+
+    background:#c9855e;
+
+    border:4px solid #111;
+
+    border-radius:22px;
+
+    transform-origin:
+        top center;
+
+    z-index:4;
+}
+
+.arm.left{
+    left:4px;
+    transform:rotate(25deg);
+}
+
+.arm.right{
+    right:4px;
+    transform:rotate(-25deg);
+}
+
+/* =========================================
+   GLOVES
+========================================= */
+
+.glove{
+    position:absolute;
+
+    width:42px;
+    height:42px;
+
+    border-radius:50%;
+
+    border:4px solid #111;
+
+    z-index:20;
+}
+
+#bobby .glove{
+    background:#ed2449;
+}
+
+#venom .glove{
+    background:#080808;
+}
+
+.glove.left{
+    left:-6px;
+    top:106px;
+}
+
+.glove.right{
+    right:-6px;
+    top:106px;
+}
+
+/* =========================================
+   LEGS
+========================================= */
+
+.leg{
+    position:absolute;
+
+    top:130px;
+
+    width:31px;
+    height:82px;
+
+    background:#101725;
+
+    border:4px solid #090909;
+
+    z-index:2;
+}
+
+.leg.left{
+    left:29px;
+}
+
+.leg.right{
+    right:29px;
+}
+
+.leg:after{
+    content:"";
+
+    position:absolute;
+
+    bottom:-11px;
+
+    width:44px;
+    height:18px;
+
+    background:#070707;
+
+    border-radius:50%;
+}
+
+.leg.left:after{
+    left:-12px;
+}
+
+.leg.right:after{
+    right:-12px;
+}
+
+/* =========================================
+   FACING
+========================================= */
+
+#venom{
+    transform:scaleX(-1);
+}
+
+/* =========================================
+   ATTACK ANIMATIONS
+========================================= */
+
+.attack-jab .arm.right{
+    animation:jabArm .18s ease;
+}
+
+.attack-jab .glove.right{
+    animation:jabGlove .18s ease;
+}
+
+@keyframes jabArm{
+
+    0%{
+        transform:rotate(-25deg);
+    }
+
+    50%{
+        transform:
+            rotate(-75deg)
+            translateX(25px);
+    }
+
+    100%{
+        transform:rotate(-25deg);
+    }
+}
+
+@keyframes jabGlove{
+
+    0%{
+        transform:translate(0,0);
+    }
+
+    50%{
+        transform:translate(38px,-12px);
+    }
+
+    100%{
+        transform:translate(0,0);
+    }
+}
+
+/* =========================================
+   CROSS
+========================================= */
+
+.attack-cross .arm.right{
+    animation:crossArm .25s ease;
+}
+
+.attack-cross .glove.right{
+    animation:crossGlove .25s ease;
+}
+
+@keyframes crossArm{
+
+    0%{
+        transform:rotate(-25deg);
+    }
+
+    50%{
+        transform:
+            rotate(-105deg)
+            translateX(40px);
+    }
+
+    100%{
+        transform:rotate(-25deg);
+    }
+}
+
+@keyframes crossGlove{
+
+    0%{
+        transform:translate(0,0);
+    }
+
+    50%{
+        transform:translate(50px,-22px);
+    }
+
+    100%{
+        transform:translate(0,0);
+    }
+}
+
+/* =========================================
+   HEAVY
+========================================= */
+
+.attack-heavy .arm.right{
+    animation:heavyArm .3s ease;
+}
+
+.attack-heavy .glove.right{
+    animation:heavyGlove .3s ease;
+}
+
+@keyframes heavyArm{
+
+    0%{
+        transform:rotate(-25deg);
+    }
+
+    50%{
+        transform:
+            rotate(-125deg)
+            translateX(45px);
+    }
+
+    100%{
+        transform:rotate(-25deg);
+    }
+}
+
+@keyframes heavyGlove{
+
+    0%{
+        transform:translate(0,0);
+    }
+
+    50%{
+        transform:
+            translate(58px,-32px)
+            scale(1.15);
+    }
+
+    100%{
+        transform:translate(0,0);
+    }
+}
+
+/* =========================================
+   BLOCK
+========================================= */
+
+.blocking .arm.left{
+    transform:rotate(-55deg);
+}
+
+.blocking .arm.right{
+    transform:rotate(55deg);
+}
+
+.blocking .glove.left{
+    transform:translate(10px,-20px);
+}
+
+.blocking .glove.right{
+    transform:translate(-10px,-20px);
+}
+
+/* =========================================
+   HIT
+========================================= */
+
+.hit{
+    animation:hitShake .22s;
+}
+
+@keyframes hitShake{
+
+    0%{transform:translateX(0);}
+    25%{transform:translateX(18px);}
+    50%{transform:translateX(-15px);}
+    75%{transform:translateX(9px);}
+    100%{transform:translateX(0);}
+}
+
+/* =========================================
+   JUMP
+========================================= */
+
+.jump{
+    transform:
+        translateY(-95px);
+}
+
+#venom.jump{
+    transform:
+        scaleX(-1)
+        translateY(-95px);
+}
+
+/* =========================================
+   DODGE
+========================================= */
+
+.dodge{
+    animation:dodgeMove .3s ease;
+}
+
+@keyframes dodgeMove{
+
+    0%{
+        transform:translateX(0);
+    }
+
+    50%{
+        transform:translateX(-55px);
+    }
+
+    100%{
+        transform:translateX(0);
+    }
+}
+
+/* =========================================
+   SCREEN SHAKE
+========================================= */
+
+.screenShake{
+    animation:screenShake .18s;
+}
+
+@keyframes screenShake{
+
+    0%{transform:translate(0);}
+    25%{transform:translate(6px,-4px);}
+    50%{transform:translate(-6px,4px);}
+    75%{transform:translate(4px,2px);}
+    100%{transform:translate(0);}
+}
+
+/* =========================================
+   MESSAGE
+========================================= */
+
+#message{
+    position:absolute;
+
+    left:50%;
+    top:34%;
+
+    transform:translateX(-50%);
+
+    z-index:250;
+
+    font-size:52px;
+
+    font-weight:1000;
+
+    text-shadow:
+        5px 5px #000;
+
+    pointer-events:none;
+
+    opacity:0;
+}
+
+.messageShow{
+    animation:messagePop .65s;
+}
+
+@keyframes messagePop{
+
+    0%{
+        opacity:0;
+        transform:
+            translateX(-50%)
+            scale(.4);
+    }
+
+    25%{
+        opacity:1;
+        transform:
+            translateX(-50%)
+            scale(1.25);
+    }
+
+    75%{
+        opacity:1;
+    }
+
+    100%{
+        opacity:0;
+        transform:
+            translateX(-50%)
+            scale(1);
+    }
+}
+
+/* =========================================
    IMPACT
-========================= */
+========================================= */
 
-#impact {
+#impact{
+    position:absolute;
 
-    position: absolute;
+    display:none;
 
-    z-index: 200;
+    z-index:300;
 
-    font-size: 60px;
+    font-size:55px;
 
-    display: none;
-
-    pointer-events: none;
+    pointer-events:none;
 }
 
-/* =========================
+/* =========================================
    CONTROLS
-========================= */
+========================================= */
 
-#controls {
+#controls{
+    position:absolute;
 
-    position: absolute;
+    left:50%;
+    bottom:1.2%;
 
-    bottom: 1.5%;
+    transform:translateX(-50%);
 
-    left: 50%;
+    z-index:150;
 
-    transform: translateX(-50%);
+    background:rgba(0,0,0,.82);
 
-    z-index: 100;
+    border:
+        1px solid #4d5065;
 
-    padding: 8px 15px;
+    border-radius:6px;
 
-    background: rgba(0,0,0,.8);
+    padding:8px 14px;
 
-    border: 1px solid #555;
+    font-size:12px;
 
-    border-radius: 5px;
+    white-space:nowrap;
 
-    font-size: 12px;
-
-    color: #ddd;
-
-    white-space: nowrap;
+    color:#d7d9e5;
 }
 
-/* =========================
-   START SCREEN
-========================= */
+/* =========================================
+   MOBILE CONTROLS
+========================================= */
 
-#startScreen,
-#gameOver {
+#mobileControls{
+    display:none;
 
-    position: absolute;
+    position:absolute;
 
-    inset: 0;
+    bottom:20px;
+    left:15px;
+    right:15px;
 
-    z-index: 500;
+    z-index:400;
 
-    display: flex;
+    justify-content:
+        space-between;
 
-    flex-direction: column;
+    pointer-events:none;
+}
 
-    justify-content: center;
+.mobileGroup{
+    display:flex;
+    gap:7px;
+}
 
-    align-items: center;
+.mobileButton{
+    width:48px;
+    height:48px;
+
+    border-radius:50%;
+
+    border:2px solid white;
+
+    background:rgba(0,0,0,.65);
+
+    color:white;
+
+    font-weight:1000;
+
+    pointer-events:auto;
+}
+
+/* =========================================
+   START / GAME OVER
+========================================= */
+
+.overlay{
+    position:absolute;
+
+    inset:0;
+
+    z-index:500;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+    align-items:center;
+
+    text-align:center;
 
     background:
         radial-gradient(
             circle,
-            #262b46,
+            #292e4a,
             #05060b 75%
         );
 }
 
-#gameOver {
-    display: none;
+#gameOver{
+    display:none;
 }
 
-.overlayTitle {
+.overlayTitle{
+    font-size:
+        clamp(42px,8vw,92px);
 
-    font-size: clamp(
-        45px,
-        8vw,
-        90px
-    );
+    font-weight:1000;
 
-    font-weight: 1000;
-
-    letter-spacing: 5px;
+    letter-spacing:5px;
 
     text-shadow:
         5px 5px #000,
-        0 0 25px #ef233c;
+        0 0 30px #ef233c;
 }
 
-.overlayTitle span {
-    color: #ef233c;
+.overlayTitle span{
+    color:#ef233c;
 }
 
-.subtitle {
+.subtitle{
+    margin-top:12px;
 
-    margin-top: 10px;
+    color:#b8bdd0;
 
-    color: #b9bed0;
+    letter-spacing:4px;
 
-    letter-spacing: 3px;
+    font-size:14px;
 }
 
-button {
+.mainButton{
+    margin-top:30px;
 
-    margin-top: 30px;
+    padding:15px 48px;
 
-    padding: 15px 45px;
+    border:0;
 
-    border: none;
-
-    border-radius: 5px;
+    border-radius:5px;
 
     background:
         linear-gradient(
-            #ff4057,
-            #c81632
+            #ff4059,
+            #c71934
         );
 
-    color: white;
+    color:white;
 
-    font-size: 17px;
+    font-size:17px;
 
-    font-weight: 900;
+    font-weight:1000;
 
-    letter-spacing: 2px;
+    letter-spacing:2px;
 
-    cursor: pointer;
+    cursor:pointer;
+
+    box-shadow:
+        0 8px 25px rgba(0,0,0,.5);
 }
 
-button:hover {
+.mainButton:hover{
+    transform:scale(1.05);
+}
 
-    transform: scale(1.04);
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media(max-width:700px){
+
+    #title{
+        top:7px;
+        font-size:25px;
+        letter-spacing:2px;
+    }
+
+    .hud{
+        top:45px;
+        width:39%;
+    }
+
+    #roundBox{
+        top:76px;
+    }
+
+    #crowd{
+        top:145px;
+        font-size:20px;
+        letter-spacing:4px;
+    }
+
+    #ring{
+        left:2%;
+        right:2%;
+        bottom:14%;
+        height:55%;
+        border-width:8px;
+    }
+
+    #controls{
+        display:none;
+    }
+
+    #mobileControls{
+        display:flex;
+    }
+
+    .fighter{
+        transform:scale(.8);
+    }
+
+    #venom{
+        transform:
+            scaleX(-1)
+            scale(.8);
+    }
+
+    #message{
+        font-size:38px;
+    }
+
 }
 
 </style>
 </head>
 
+
 <body>
 
 <div id="game">
 
-    <!-- LIGHTS -->
-
-    <div class="light light1"></div>
-    <div class="light light2"></div>
-    <div class="light light3"></div>
+    <div class="light one"></div>
+    <div class="light two"></div>
+    <div class="light three"></div>
 
 
     <!-- TITLE -->
@@ -971,7 +1255,7 @@ button:hover {
         class="hud">
 
         <div class="name">
-            BOBBY
+            🥊 BOBBY
         </div>
 
         <div class="bar">
@@ -991,14 +1275,14 @@ button:hover {
     </div>
 
 
-    <!-- ENEMY HUD -->
+    <!-- VENOM HUD -->
 
     <div
         id="enemyHUD"
         class="hud">
 
         <div class="name">
-            VENOM
+            VENOM 🖤
         </div>
 
         <div class="bar">
@@ -1020,13 +1304,13 @@ button:hover {
 
     <!-- ROUND -->
 
-    <div id="round">
+    <div id="roundBox">
 
-        <div id="roundNumber">
+        <div id="roundText">
             ROUND 1
         </div>
 
-        <div id="time">
+        <div id="timer">
             60
         </div>
 
@@ -1036,7 +1320,7 @@ button:hover {
     <!-- CROWD -->
 
     <div id="crowd">
-        ● ● ● ● ● ● ● ● ● ● ● ● ● ● ●
+        ● ● ● ● ● ● ● ● ● ● ● ● ●
     </div>
 
 
@@ -1044,12 +1328,14 @@ button:hover {
 
     <div id="ring">
 
-        <div class="rope rope1"></div>
-        <div class="rope rope2"></div>
-        <div class="rope rope3"></div>
+        <div class="rope one"></div>
+        <div class="rope two"></div>
+        <div class="rope three"></div>
 
         <div class="post left"></div>
         <div class="post right"></div>
+
+        <div id="floor"></div>
 
 
         <!-- BOBBY -->
@@ -1100,6 +1386,21 @@ button:hover {
     </div>
 
 
+    <!-- COMBO -->
+
+    <div id="combo">
+
+        <div id="comboNumber">
+            0
+        </div>
+
+        <div id="comboText">
+            HIT COMBO
+        </div>
+
+    </div>
+
+
     <!-- MESSAGE -->
 
     <div id="message">
@@ -1114,38 +1415,101 @@ button:hover {
     </div>
 
 
-    <!-- CONTROLS -->
+    <!-- KEYBOARD CONTROLS -->
 
     <div id="controls">
 
-        A / D = MOVE
-        &nbsp; | &nbsp;
-        W = JUMP
-        &nbsp; | &nbsp;
-        J = JAB
-        &nbsp; | &nbsp;
-        K = CROSS
-        &nbsp; | &nbsp;
-        L = HEAVY
-        &nbsp; | &nbsp;
-        S = BLOCK
+        A / D MOVE
+        &nbsp; • &nbsp;
+        W JUMP
+        &nbsp; • &nbsp;
+        J JAB
+        &nbsp; • &nbsp;
+        K CROSS
+        &nbsp; • &nbsp;
+        L HEAVY
+        &nbsp; • &nbsp;
+        S BLOCK
+        &nbsp; • &nbsp;
+        SPACE DASH
+
+    </div>
+
+
+    <!-- MOBILE -->
+
+    <div id="mobileControls">
+
+        <div class="mobileGroup">
+
+            <button
+                class="mobileButton"
+                data-key="a">
+                ◀
+            </button>
+
+            <button
+                class="mobileButton"
+                data-key="d">
+                ▶
+            </button>
+
+            <button
+                class="mobileButton"
+                data-key="w">
+                ⬆
+            </button>
+
+        </div>
+
+        <div class="mobileGroup">
+
+            <button
+                class="mobileButton"
+                data-key="j">
+                J
+            </button>
+
+            <button
+                class="mobileButton"
+                data-key="k">
+                K
+            </button>
+
+            <button
+                class="mobileButton"
+                data-key="l">
+                L
+            </button>
+
+            <button
+                class="mobileButton"
+                data-key="s">
+                🛡
+            </button>
+
+        </div>
 
     </div>
 
 
     <!-- START -->
 
-    <div id="startScreen">
+    <div
+        id="startScreen"
+        class="overlay">
 
         <div class="overlayTitle">
             BOBBY <span>BOXING</span>
         </div>
 
         <div class="subtitle">
-            ROUND 1 • FIGHT NIGHT
+            V5 • FIGHT NIGHT
         </div>
 
-        <button id="startButton">
+        <button
+            id="startButton"
+            class="mainButton">
             ENTER THE RING
         </button>
 
@@ -1154,7 +1518,9 @@ button:hover {
 
     <!-- GAME OVER -->
 
-    <div id="gameOver">
+    <div
+        id="gameOver"
+        class="overlay">
 
         <div
             id="result"
@@ -1165,11 +1531,12 @@ button:hover {
         <div
             id="resultSub"
             class="subtitle">
-            FIGHT OVER
+            KNOCKOUT!
         </div>
 
         <button
-            onclick="location.reload()">
+            id="rematch"
+            class="mainButton">
             REMATCH
         </button>
 
@@ -1180,9 +1547,12 @@ button:hover {
 
 <script>
 
-/* =====================================
-   GET ELEMENTS
-===================================== */
+/* =========================================
+   ELEMENTS
+========================================= */
+
+const game =
+    document.getElementById("game");
 
 const bobby =
     document.getElementById("bobby");
@@ -1202,14 +1572,20 @@ const playerStamina =
 const enemyStamina =
     document.getElementById("enemyStamina");
 
-const timeDisplay =
-    document.getElementById("time");
+const timer =
+    document.getElementById("timer");
 
 const message =
     document.getElementById("message");
 
 const impact =
     document.getElementById("impact");
+
+const combo =
+    document.getElementById("combo");
+
+const comboNumber =
+    document.getElementById("comboNumber");
 
 const startScreen =
     document.getElementById("startScreen");
@@ -1226,12 +1602,15 @@ const result =
 const resultSub =
     document.getElementById("resultSub");
 
+const rematch =
+    document.getElementById("rematch");
 
-/* =====================================
-   VARIABLES
-===================================== */
 
-let gameRunning = false;
+/* =========================================
+   GAME STATE
+========================================= */
+
+let running = false;
 
 let playerHP = 100;
 let venomHP = 100;
@@ -1242,70 +1621,123 @@ let venomSP = 100;
 let playerX = 20;
 let venomX = 70;
 
-let seconds = 60;
+let timeLeft = 60;
+
+let comboCount = 0;
+
+let comboTimer = null;
 
 let blocking = false;
 let jumping = false;
+let attacking = false;
+
+let audioContext = null;
+
+let aiTimer = null;
+let gameTimer = null;
 
 
-/* =====================================
+/* =========================================
    START
-===================================== */
+========================================= */
 
 startButton.addEventListener(
     "click",
     startGame
 );
 
-function startGame() {
+rematch.addEventListener(
+    "click",
+    () => {
+        location.reload();
+    }
+);
+
+
+function startGame(){
+
+    running = true;
 
     startScreen.style.display =
         "none";
 
-    gameRunning = true;
+    audioContext =
+        new (
+            window.AudioContext ||
+            window.webkitAudioContext
+        )();
 
     showMessage("FIGHT!");
 
-    startTimer();
+    playSound(
+        180,
+        .18,
+        "square"
+    );
+
+    startClock();
 
     startAI();
+
 }
 
 
-/* =====================================
+/* =========================================
    KEYBOARD
-===================================== */
+========================================= */
 
 document.addEventListener(
     "keydown",
-    function(e) {
+    function(event){
 
-        if (!gameRunning)
+        if(!running)
             return;
 
-        let key =
-            e.key.toLowerCase();
+        if(event.repeat)
+            return;
 
-        if (key === "a")
-            move(-2);
+        const key =
+            event.key.toLowerCase();
 
-        if (key === "d")
-            move(2);
 
-        if (key === "w")
+        if(key === "a"){
+            move(-2.5);
+        }
+
+
+        if(key === "d"){
+            move(2.5);
+        }
+
+
+        if(key === "w"){
             jump();
+        }
 
-        if (key === "j")
+
+        if(key === "j"){
             attack("jab");
+        }
 
-        if (key === "k")
+
+        if(key === "k"){
             attack("cross");
+        }
 
-        if (key === "l")
+
+        if(key === "l"){
             attack("heavy");
+        }
 
-        if (key === "s")
-            block();
+
+        if(key === "s"){
+            startBlock();
+        }
+
+
+        if(event.code === "Space"){
+            dash();
+        }
 
     }
 );
@@ -1313,13 +1745,14 @@ document.addEventListener(
 
 document.addEventListener(
     "keyup",
-    function(e) {
+    function(event){
 
-        if (
-            e.key.toLowerCase() === "s"
-        ) {
+        if(
+            event.key.toLowerCase()
+            === "s"
+        ){
 
-            unblock();
+            stopBlock();
 
         }
 
@@ -1327,35 +1760,135 @@ document.addEventListener(
 );
 
 
-/* =====================================
+/* =========================================
+   MOBILE BUTTONS
+========================================= */
+
+document
+.querySelectorAll(".mobileButton")
+.forEach(
+    button => {
+
+        button.addEventListener(
+            "touchstart",
+            function(event){
+
+                event.preventDefault();
+
+                const key =
+                    button.dataset.key;
+
+                fakeKey(key);
+
+            }
+        );
+
+    }
+);
+
+
+function fakeKey(key){
+
+    if(!running)
+        return;
+
+
+    if(key === "a")
+        move(-3);
+
+    if(key === "d")
+        move(3);
+
+    if(key === "w")
+        jump();
+
+    if(key === "j")
+        attack("jab");
+
+    if(key === "k")
+        attack("cross");
+
+    if(key === "l")
+        attack("heavy");
+
+    if(key === "s")
+        startBlock();
+
+}
+
+
+/* =========================================
    MOVEMENT
-===================================== */
+========================================= */
 
-function move(amount) {
+function move(amount){
 
-    if (blocking)
+    if(blocking || attacking)
         return;
 
     playerX += amount;
 
-    if (playerX < 7)
-        playerX = 7;
-
-    if (playerX > 85)
-        playerX = 85;
+    playerX =
+        Math.max(
+            8,
+            Math.min(
+                84,
+                playerX
+            )
+        );
 
     bobby.style.left =
         playerX + "%";
+
 }
 
 
-/* =====================================
+/* =========================================
+   DASH
+========================================= */
+
+function dash(){
+
+    if(blocking || playerSP < 15)
+        return;
+
+    playerSP -= 15;
+
+    updateBars();
+
+    bobby.classList.add("dodge");
+
+    move(
+        playerX < venomX
+            ? 8
+            : -8
+    );
+
+    playSound(
+        350,
+        .08,
+        "sine"
+    );
+
+    setTimeout(
+        () => {
+            bobby.classList.remove(
+                "dodge"
+            );
+        },
+        300
+    );
+
+}
+
+
+/* =========================================
    JUMP
-===================================== */
+========================================= */
 
-function jump() {
+function jump(){
 
-    if (jumping)
+    if(jumping || blocking)
         return;
 
     jumping = true;
@@ -1365,7 +1898,7 @@ function jump() {
     );
 
     setTimeout(
-        function() {
+        () => {
 
             bobby.classList.remove(
                 "jump"
@@ -1380,69 +1913,86 @@ function jump() {
 }
 
 
-/* =====================================
+/* =========================================
    BLOCK
-===================================== */
+========================================= */
 
-function block() {
+function startBlock(){
+
+    if(attacking)
+        return;
 
     blocking = true;
 
     bobby.classList.add(
-        "block"
+        "blocking"
     );
 
 }
 
 
-function unblock() {
+function stopBlock(){
 
     blocking = false;
 
     bobby.classList.remove(
-        "block"
+        "blocking"
     );
 
 }
 
 
-/* =====================================
+/* =========================================
    ATTACK
-===================================== */
+========================================= */
 
-function attack(type) {
+function attack(type){
 
-    if (blocking)
+    if(
+        !running ||
+        blocking ||
+        attacking
+    )
         return;
+
 
     let damage = 0;
     let cost = 0;
+    let duration = 250;
 
-    if (type === "jab") {
+
+    if(type === "jab"){
 
         damage = 7;
-        cost = 5;
-
-    }
-
-    if (type === "cross") {
-
-        damage = 12;
-        cost = 9;
-
-    }
-
-    if (type === "heavy") {
-
-        damage = 20;
-        cost = 18;
+        cost = 4;
+        duration = 190;
 
     }
 
 
-    if (playerSP < cost) {
+    if(type === "cross"){
 
-        showMessage("TIRED!");
+        damage = 11;
+        cost = 7;
+        duration = 240;
+
+    }
+
+
+    if(type === "heavy"){
+
+        damage = 19;
+        cost = 15;
+        duration = 300;
+
+    }
+
+
+    if(playerSP < cost){
+
+        showMessage(
+            "TIRED!"
+        );
 
         return;
 
@@ -1453,82 +2003,156 @@ function attack(type) {
 
     updateBars();
 
+    attacking = true;
 
-    bobby.classList.remove(
-        "jab",
-        "cross",
-        "heavy"
-    );
 
-    void bobby.offsetWidth;
+    const className =
+        "attack-" + type;
+
 
     bobby.classList.add(
-        type
+        className
+    );
+
+
+    playSound(
+        type === "heavy"
+            ? 90
+            : 150,
+        .08,
+        "square"
     );
 
 
     setTimeout(
-        function() {
+        () => {
 
             bobby.classList.remove(
-                type
+                className
             );
 
+            attacking = false;
+
         },
-        350
+        duration
     );
 
 
-    let distance =
+    const distance =
         Math.abs(
             playerX - venomX
         );
 
 
-    if (distance < 24) {
+    if(distance < 23){
 
-        hitVenom(damage);
+        hitVenom(
+            damage,
+            type
+        );
 
     }
-    else {
+    else{
 
-        showMessage("MISS");
+        showMessage(
+            "MISS!"
+        );
 
     }
 
 }
 
 
-/* =====================================
-   HIT VENOM
-===================================== */
+/* =========================================
+   VENOM HIT
+========================================= */
 
-function hitVenom(damage) {
+function hitVenom(
+    damage,
+    attackType
+){
+
+    if(!running)
+        return;
+
+
+    /* Venom occasionally blocks */
+
+    if(
+        Math.random() < .16
+    ){
+
+        showMessage(
+            "BLOCKED!"
+        );
+
+        playSound(
+            100,
+            .1,
+            "sawtooth"
+        );
+
+        return;
+
+    }
+
 
     venomHP -= damage;
 
-    if (venomHP < 0)
-        venomHP = 0;
+    venomHP =
+        Math.max(
+            0,
+            venomHP
+        );
 
-    enemyHealth.style.width =
-        venomHP + "%";
+
+    updateBars();
 
 
     venom.classList.add(
         "hit"
     );
 
-    showMessage(
-        damage >= 18
-            ? "HEAVY HIT!"
-            : "HIT!"
-    );
 
     showImpact();
 
+    shakeScreen();
+
+    playSound(
+        attackType === "heavy"
+            ? 55
+            : 110,
+        .13,
+        "sawtooth"
+    );
+
+
+    comboCount++;
+
+
+    showCombo();
+
+
+    if(
+        attackType === "heavy"
+    ){
+
+        showMessage(
+            "💥 HEAVY HIT!"
+        );
+
+    }
+    else{
+
+        showMessage(
+            "HIT!"
+        );
+
+    }
+
 
     setTimeout(
-        function() {
+        () => {
 
             venom.classList.remove(
                 "hit"
@@ -1539,109 +2163,247 @@ function hitVenom(damage) {
     );
 
 
-    if (venomHP <= 0) {
+    if(venomHP <= 0){
 
-        win();
+        knockout(
+            "BOBBY"
+        );
 
     }
 
 }
 
 
-/* =====================================
-   VENOM AI
-===================================== */
+/* =========================================
+   COMBO
+========================================= */
 
-function startAI() {
+function showCombo(){
 
-    setInterval(
-        function() {
+    comboNumber.innerText =
+        comboCount;
 
-            if (!gameRunning)
-                return;
-
-
-            let distance =
-                Math.abs(
-                    venomX - playerX
-                );
-
-
-            if (distance > 18) {
-
-                if (
-                    venomX > playerX
-                ) {
-
-                    venomX -= 1;
-
-                }
-                else {
-
-                    venomX += 1;
-
-                }
-
-                venom.style.left =
-                    venomX + "%";
-
-            }
-
-
-            if (
-                distance < 22 &&
-                Math.random() < .35
-            ) {
-
-                venomAttack();
-
-            }
-
-        },
-        500
+    combo.classList.remove(
+        "comboShow"
     );
+
+    void combo.offsetWidth;
+
+    combo.classList.add(
+        "comboShow"
+    );
+
+
+    clearTimeout(
+        comboTimer
+    );
+
+
+    comboTimer =
+        setTimeout(
+            () => {
+
+                comboCount = 0;
+
+            },
+            1500
+        );
 
 }
 
 
-/* =====================================
+/* =========================================
+   VENOM AI
+========================================= */
+
+function startAI(){
+
+    clearInterval(
+        aiTimer
+    );
+
+
+    aiTimer =
+        setInterval(
+            () => {
+
+                if(!running)
+                    return;
+
+
+                const distance =
+                    Math.abs(
+                        venomX - playerX
+                    );
+
+
+                /* Move closer */
+
+                if(distance > 19){
+
+                    if(
+                        venomX > playerX
+                    ){
+
+                        venomX -=
+                            1.2;
+
+                    }
+                    else{
+
+                        venomX +=
+                            1.2;
+
+                    }
+
+                    venomX =
+                        Math.max(
+                            8,
+                            Math.min(
+                                84,
+                                venomX
+                            )
+                        );
+
+                    venom.style.left =
+                        venomX + "%";
+
+                }
+
+
+                /* Attack */
+
+                if(
+                    distance < 22 &&
+                    Math.random() < .42
+                ){
+
+                    venomAttack();
+
+                }
+
+
+                /* Occasionally retreat */
+
+                if(
+                    Math.random() < .08
+                ){
+
+                    venomX +=
+                        venomX > playerX
+                            ? 4
+                            : -4;
+
+                    venomX =
+                        Math.max(
+                            8,
+                            Math.min(
+                                84,
+                                venomX
+                            )
+                        );
+
+                    venom.style.left =
+                        venomX + "%";
+
+                }
+
+            },
+            450
+        );
+
+}
+
+
+/* =========================================
    VENOM ATTACK
-===================================== */
+========================================= */
 
-function venomAttack() {
+function venomAttack(){
 
-    if (venomSP < 8)
+    if(
+        venomSP < 8 ||
+        !running
+    )
         return;
+
 
     venomSP -= 8;
 
 
-    let damage =
-        Math.random() < .2
-            ? 15
-            : 8;
+    const distance =
+        Math.abs(
+            venomX - playerX
+        );
 
 
-    if (jumping) {
+    if(distance > 23)
+        return;
 
-        showMessage("DODGED!");
+
+    venom.classList.add(
+        "attack-cross"
+    );
+
+
+    setTimeout(
+        () => {
+
+            venom.classList.remove(
+                "attack-cross"
+            );
+
+        },
+        250
+    );
+
+
+    /* Jump dodge */
+
+    if(jumping){
+
+        showMessage(
+            "DODGED!"
+        );
+
+        playSound(
+            420,
+            .07,
+            "sine"
+        );
 
         return;
 
     }
 
 
-    if (blocking) {
+    let damage =
+        Math.random() < .22
+            ? 15
+            : 8;
+
+
+    /* Block */
+
+    if(blocking){
 
         damage =
             Math.floor(
                 damage * .2
             );
 
-        showMessage("BLOCKED!");
+        showMessage(
+            "BLOCKED!"
+        );
+
+        playSound(
+            90,
+            .08,
+            "square"
+        );
 
     }
-    else {
+    else{
 
         showMessage(
             "VENOM HIT!"
@@ -1651,8 +2413,17 @@ function venomAttack() {
             "hit"
         );
 
+        shakeScreen();
+
+        playSound(
+            80,
+            .12,
+            "sawtooth"
+        );
+
+
         setTimeout(
-            function() {
+            () => {
 
                 bobby.classList.remove(
                     "hit"
@@ -1667,53 +2438,115 @@ function venomAttack() {
 
     playerHP -= damage;
 
-    if (playerHP < 0)
-        playerHP = 0;
+    playerHP =
+        Math.max(
+            0,
+            playerHP
+        );
 
 
     updateBars();
 
 
-    if (playerHP <= 0) {
+    if(playerHP <= 0){
 
-        lose();
+        knockout(
+            "VENOM"
+        );
 
     }
 
 }
 
 
-/* =====================================
-   STAMINA
-===================================== */
+/* =========================================
+   STAMINA REGEN
+========================================= */
 
 setInterval(
-    function() {
+    () => {
 
-        if (!gameRunning)
+        if(!running)
             return;
 
-        playerSP += 2;
-        venomSP += 3;
 
-        if (playerSP > 100)
-            playerSP = 100;
+        playerSP =
+            Math.min(
+                100,
+                playerSP + 2.2
+            );
 
-        if (venomSP > 100)
-            venomSP = 100;
+
+        venomSP =
+            Math.min(
+                100,
+                venomSP + 2.8
+            );
+
 
         updateBars();
 
     },
-    500
+    400
 );
 
 
-/* =====================================
-   BARS
-===================================== */
+/* =========================================
+   TIMER
+========================================= */
 
-function updateBars() {
+function startClock(){
+
+    clearInterval(
+        gameTimer
+    );
+
+
+    gameTimer =
+        setInterval(
+            () => {
+
+                if(!running)
+                    return;
+
+
+                timeLeft--;
+
+                timer.innerText =
+                    timeLeft;
+
+
+                if(timeLeft <= 10){
+
+                    timer.classList.add(
+                        "danger"
+                    );
+
+                }
+
+
+                if(timeLeft <= 0){
+
+                    clearInterval(
+                        gameTimer
+                    );
+
+                    pointsResult();
+
+                }
+
+            },
+            1000
+        );
+
+}
+
+
+/* =========================================
+   UPDATE HUD
+========================================= */
+
+function updateBars(){
 
     playerHealth.style.width =
         playerHP + "%";
@@ -1730,59 +2563,11 @@ function updateBars() {
 }
 
 
-/* =====================================
-   TIMER
-===================================== */
-
-function startTimer() {
-
-    let interval =
-        setInterval(
-            function() {
-
-                if (!gameRunning) {
-
-                    clearInterval(interval);
-
-                    return;
-
-                }
-
-
-                seconds--;
-
-                timeDisplay.innerText =
-                    seconds;
-
-
-                if (seconds <= 10) {
-
-                    timeDisplay.style.color =
-                        "#ef233c";
-
-                }
-
-
-                if (seconds <= 0) {
-
-                    clearInterval(interval);
-
-                    pointsResult();
-
-                }
-
-            },
-            1000
-        );
-
-}
-
-
-/* =====================================
+/* =========================================
    MESSAGE
-===================================== */
+========================================= */
 
-function showMessage(text) {
+function showMessage(text){
 
     message.innerText =
         text;
@@ -1800,111 +2585,174 @@ function showMessage(text) {
 }
 
 
-/* =====================================
+/* =========================================
    IMPACT
-===================================== */
+========================================= */
 
-function showImpact() {
+function showImpact(){
 
     impact.style.display =
         "block";
 
+
+    const ring =
+        document.getElementById(
+            "ring"
+        );
+
+
+    const rect =
+        ring.getBoundingClientRect();
+
+
     impact.style.left =
-        (50 + Math.random() * 10)
-        + "%";
+        (
+            rect.left +
+            rect.width * .5
+        ) + "px";
+
 
     impact.style.top =
-        (35 + Math.random() * 15)
-        + "%";
+        (
+            rect.top +
+            rect.height * .42
+        ) + "px";
+
 
     setTimeout(
-        function() {
+        () => {
 
             impact.style.display =
                 "none";
 
         },
-        250
+        220
     );
 
 }
 
 
-/* =====================================
-   WIN
-===================================== */
+/* =========================================
+   SCREEN SHAKE
+========================================= */
 
-function win() {
+function shakeScreen(){
 
-    gameRunning = false;
+    game.classList.remove(
+        "screenShake"
+    );
 
-    result.innerHTML =
-        'BOBBY <span>WINS!</span>';
+    void game.offsetWidth;
 
-    resultSub.innerText =
-        "VENOM HAS BEEN KNOCKED OUT";
-
-    gameOver.style.display =
-        "flex";
-
-}
-
-
-/* =====================================
-   LOSE
-===================================== */
-
-function lose() {
-
-    gameRunning = false;
-
-    result.innerHTML =
-        'VENOM <span>WINS!</span>';
-
-    resultSub.innerText =
-        "BOBBY HAS BEEN KNOCKED OUT";
-
-    gameOver.style.display =
-        "flex";
+    game.classList.add(
+        "screenShake"
+    );
 
 }
 
 
-/* =====================================
-   TIME RESULT
-===================================== */
+/* =========================================
+   KNOCKOUT
+========================================= */
 
-function pointsResult() {
+function knockout(winner){
 
-    gameRunning = false;
+    running = false;
 
-    if (playerHP > venomHP) {
+    clearInterval(
+        aiTimer
+    );
+
+    clearInterval(
+        gameTimer
+    );
+
+
+    showMessage(
+        "K.O.!"
+    );
+
+
+    if(winner === "BOBBY"){
 
         result.innerHTML =
             'BOBBY <span>WINS!</span>';
 
         resultSub.innerText =
-            "WIN BY POINTS";
+            "🥊 KNOCKOUT! 🥊";
 
     }
-    else if (venomHP > playerHP) {
+    else{
 
         result.innerHTML =
             'VENOM <span>WINS!</span>';
 
         resultSub.innerText =
-            "VENOM WINS BY POINTS";
+            "🖤 BOBBY HAS BEEN KNOCKED OUT";
 
     }
-    else {
+
+
+    setTimeout(
+        () => {
+
+            gameOver.style.display =
+                "flex";
+
+        },
+        900
+    );
+
+}
+
+
+/* =========================================
+   POINTS
+========================================= */
+
+function pointsResult(){
+
+    running = false;
+
+    clearInterval(
+        aiTimer
+    );
+
+
+    if(
+        playerHP >
+        venomHP
+    ){
 
         result.innerHTML =
-            "DRAW";
+            'BOBBY <span>WINS!</span>';
 
         resultSub.innerText =
-            "WHAT A FIGHT!";
+            "🏆 WIN BY POINTS";
 
     }
+    else if(
+        venomHP >
+        playerHP
+    ){
+
+        result.innerHTML =
+            'VENOM <span>WINS!</span>';
+
+        resultSub.innerText =
+            "🖤 VENOM WINS BY POINTS";
+
+    }
+    else{
+
+        result.innerHTML =
+            '<span>DRAW!</span>';
+
+        resultSub.innerText =
+            "🔥 WHAT A FIGHT!";
+
+    }
+
 
     gameOver.style.display =
         "flex";
@@ -1912,9 +2760,84 @@ function pointsResult() {
 }
 
 
-/* =====================================
+/* =========================================
+   SOUND
+========================================= */
+
+function playSound(
+    frequency,
+    duration,
+    type
+){
+
+    if(!audioContext)
+        return;
+
+
+    try{
+
+        const oscillator =
+            audioContext.createOscillator();
+
+        const gain =
+            audioContext.createGain();
+
+
+        oscillator.type =
+            type;
+
+        oscillator.frequency.value =
+            frequency;
+
+
+        gain.gain.setValueAtTime(
+            .0001,
+            audioContext.currentTime
+        );
+
+
+        gain.gain.exponentialRampToValueAtTime(
+            .15,
+            audioContext.currentTime + .01
+        );
+
+
+        gain.gain.exponentialRampToValueAtTime(
+            .0001,
+            audioContext.currentTime + duration
+        );
+
+
+        oscillator.connect(
+            gain
+        );
+
+        gain.connect(
+            audioContext.destination
+        );
+
+
+        oscillator.start();
+
+        oscillator.stop(
+            audioContext.currentTime +
+            duration
+        );
+
+    }
+    catch(error){
+
+        /* Audio is optional.
+           Game continues normally. */
+
+    }
+
+}
+
+
+/* =========================================
    INITIAL
-===================================== */
+========================================= */
 
 updateBars();
 
